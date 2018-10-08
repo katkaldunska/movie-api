@@ -1,0 +1,31 @@
+{
+  "name": "movie-api",
+  "version": "1.0.0",
+  "description": "simple REST API - a basic movie database interacting with external API",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "mocha server/**/*.test.js",
+    "start": "node server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/katkaldunska/movie-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/katkaldunska/movie-api/issues"
+  },
+  "homepage": "https://github.com/katkaldunska/movie-api#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "mongoose": "^5.3.2",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "expect": "^23.4.0",
+    "mocha": "^5.2.0",
+    "supertest": "^3.3.0"
+  }
+}
