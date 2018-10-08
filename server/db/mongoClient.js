@@ -7,7 +7,7 @@ MongoClient.connect(
     if (error) {
       return error;
     }
-    db = client.db('MovieApp');
+    db = client.db();
     try {
       db.createCollection('movies');
       db.createCollection('comments');
