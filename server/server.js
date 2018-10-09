@@ -67,6 +67,16 @@ app.post('/comments', (req, res) => {
 
 });
 
+// GET /comments
+app.get('/comments', (req, res) => {
+  const query = req.query;
+  MongoClient.collection('comments').find(query).toArray((error, arr) => {
+    if (error) {
+      return res.status(500).send(error);
+    }
+    return res.status(200).send(arr);
+  });
+});
 
 
 app.listen(port, () => {

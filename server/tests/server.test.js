@@ -111,5 +111,24 @@ describe('POST /comments', () => {
         done();
       });
   });
-  
+
+});
+
+describe('GET /comments', () => {
+  let movieId;
+  before(done => MongoClient.collection('movies').insertOne({title: validTitle}, err => done(), data => {
+    movieId = data.ops[0]._id;
+  }));
+  before(done => MongoClient.collection('comments').insertOne({movieId: movieId, body: 'test'}, err => done()));
+
+  it('should get comments', (done) => {
+
+    supertest(app)
+      .get('/comments')
+      .expect(200)
+      .end((err, res) => {
+        expect(res.body.length).toBe(1);
+        done();
+      });
+    });
 });
