@@ -44,8 +44,44 @@ app.get('/movies', (req, res) => {
   });
 });
 
+// POST /comments
+app.post('/comments', (req, res) => {
+  const {movieId, body} = req.body;
+
+  if (movieId && ObjectID.isValid(movieId) && body) {
+
+    return MongoClient.collection('movies').findOne({_id: ObjectID(movieId)}, (error, data) => {
+      if (error) {
+        return res.status(500).send(error);
+      } else if (!data) {
+        return res.status(404).send('Movie not found');
+      }
+
+      return handleCommentInsert(movieId, body)
+      .then(data => res.status(200).send(data))
+      .catch(error => res.status(500).send(error));
+
+    });
+  }
+  return res.status(400).send('Request must contain movieId and body');
+
+});
+
+
+
 app.listen(port, () => {
   console.log(`Started on port ${port}`);
 });
+
+const handleCommentInsert = (movieId, body) => {
+  return new Promise ((fullfill, reject) => {
+    MongoClient.collection('comments').insertOne({movieId, body}, (error, result) => {
+      if (error) {
+        reject(error);
+      }
+      fullfill(result.ops[0]);
+    })
+  });
+};
 
 module.exports = {app};

@@ -77,3 +77,39 @@ describe('GET /movies', () => {
       });
     });
 });
+
+describe('POST /comments', () => {
+  let movieId;
+  beforeEach(done => MongoClient.collection('comments').deleteMany({}, (err => done())));
+  before(done => MongoClient.collection('movies').insertOne({title: validTitle}, err => done(), data => {
+    movieId = data.ops[0]._id;
+  }));
+
+  it('should create a new comment', (done) => {
+
+    supertest(app)
+      .post('/comments')
+      .send({movieId: movieId, body: 'test'})
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.movieId).toBe(movieId);
+      });
+        done();
+    });
+
+  it('should not create a new comment with invalid movieId', (done) => {
+
+    supertest(app)
+      .post('/movies')
+      .send({movieId: new ObjectID(), body: 'test'})
+      .expect(404)
+      .end((err, res) => {
+        expect(res).toHaveProperty('error');
+        MongoClient.collection('comments').find({}).toArray((err, arr) => {
+          expect(arr.length).toBe(0);
+        });
+        done();
+      });
+  });
+  
+});
