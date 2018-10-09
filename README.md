@@ -96,8 +96,8 @@ OMDb API (http://www.omdbapi.com/) - used for retrieving movies data.
 
 ## Authors
 
-* **Katarzyna Kałduńska**
- - [PurpleBooth](https://github.com/katkaldunska)
+**Katarzyna Kałduńska**
+(https://github.com/katkaldunska)
 
 
 ## License
