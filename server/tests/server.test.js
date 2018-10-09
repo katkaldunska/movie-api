@@ -5,9 +5,11 @@ const {ObjectID} = require('mongodb');
 const {app} = require('../server');
 const MongoClient = require('../db/mongoClient');
 
+const validTitle = 'Carrie';
+const invalidTitle = 'Salems Lot';
+
 describe('POST /movies', () => {
-  const validTitle = 'Carrie';
-  const invalidTitle = 'Salems Lot';
+
   beforeEach(done => MongoClient.collection('movies').deleteMany({}, (err => done())));
 
   it('should create a new movie', (done) => {
@@ -60,4 +62,18 @@ describe('POST /movies', () => {
       });
   });
 
+});
+
+describe('GET /movies', () => {
+  before(done => MongoClient.collection('movies').insertOne({title: validTitle}, err => done()));
+  it('should get movies', (done) => {
+
+    supertest(app)
+      .get('/movies')
+      .expect(200)
+      .end((err, res) => {
+        expect(res.body.length).toBe(1);
+        done();
+      });
+    });
 });

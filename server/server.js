@@ -31,6 +31,19 @@ app.post('/movies', (req, res) => {
 
 });
 
+// GET /movies
+app.get('/movies', (req, res) => {
+  let {sort, sortdir, ...query} = req.query;
+  sort = sort || '_id';
+  sortdir = sortdir || -1;
+  MongoClient.collection('movies').find(query).sort({[sort]: parseInt(sortdir)}).toArray((error, arr) => {
+    if (error) {
+      return res.status(500).send(error);
+    }
+    return res.status(200).send(arr);
+  });
+});
+
 app.listen(port, () => {
   console.log(`Started on port ${port}`);
 });
